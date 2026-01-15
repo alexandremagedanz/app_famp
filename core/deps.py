@@ -14,11 +14,11 @@ from models.usuario_model import UsuarioModel
 class TokenData(BaseModel):
     username: str | None = None
 
-async def get_section() -> AsyncGenerator[AsyncSession, None]:
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
     async with Session() as session:
         yield session
 
-async def get_current_user(token: str = Depends(oauth2_schema), db: AsyncSession  = Depends(get_section)) -> UsuarioModel:
+async def get_current_user(token: str = Depends(oauth2_schema), db: AsyncSession  = Depends(get_session)) -> UsuarioModel:
     exception_credentials = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Não foi possivel validar as credenciais",
